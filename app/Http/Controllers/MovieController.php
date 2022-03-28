@@ -14,9 +14,24 @@ class MovieController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $movies = Movie::all();
+        $title = $request->query('title');
+        $director = $request->query('director');
+
+        $query = Movie::query();
+
+        if ($title) {
+            $query = $query->where('title', '+', "%$title%");
+        }
+        if ($director) {
+            $query = $query->where('director', 'like', "%$director%");
+        }
+
+        $movies = $query->paginate(
+            $request->query('per_page', 10) // page size
+        );
+
         return response()->json($movies);
     }
 
