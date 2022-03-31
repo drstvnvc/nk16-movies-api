@@ -22,11 +22,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('movies', [MovieController::class, 'index']);
 Route::get('movies/{movie}', [MovieController::class, 'show']);
-Route::post('movies', [MovieController::class, 'store']);
-Route::put('movies/{movie}', [MovieController::class, 'update']);
-Route::delete('movies/{movie}', [MovieController::class, 'destroy']);
+Route::post('movies', [MovieController::class, 'store'])->middleware('auth');
+Route::put('movies/{movie}', [MovieController::class, 'update'])->middleware('auth');
+Route::delete('movies/{movie}', [MovieController::class, 'destroy'])->middleware('auth');
 
 Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
 Route::post('logout', [AuthController::class, 'logout'])->middleware('auth');
+Route::post('refresh', [AuthController::class, 'refreshToken']);
 Route::get('my-profile', [AuthController::class, 'getMyProfile'])->middleware('auth');
